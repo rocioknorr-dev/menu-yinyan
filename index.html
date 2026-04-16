@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YIN YAN — Menú Saludable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0392B;
+    --dark-brown: #2C1810;
+    --cream: #FFF8F0;
+    --warm: #FFF5EB;
+    --white: #FFFFFF;
+    --light-bg: #FAF0EE;
+    --gray: #5A4A42;
+    --light-gray: #8B7D75;
+    --protein: #27AE60;
+    --fat: #E67E22;
+    --carb: #2980B9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(192,57,43,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(41,128,185,0.05) 0%, transparent 60%),
+      linear-gradient(180deg, #FFFBF5 0%, #FFF8F0 40%, #FFF5EB 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .anim { animation: fadeUp 0.5s ease both; }
+  .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.16s; }
+  .d3 { animation-delay: 0.24s; } .d4 { animation-delay: 0.32s; }
+  .d5 { animation-delay: 0.4s; }  .d6 { animation-delay: 0.48s; }
+
+  /* ---- HEADER ---- */
+  .header {
+    text-align: center;
+    padding: 44px 24px 32px;
+    position: relative;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--protein), var(--fat), var(--carb), var(--red), var(--protein));
+  }
+
+  .logo-img {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 14px;
+    display: block;
+    box-shadow: 0 6px 28px rgba(44,24,16,0.18);
+    animation: fadeUp 0.5s ease both;
+    border: 3px solid var(--red);
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--dark-brown);
+    letter-spacing: 6px;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  .header .sub {
+    font-size: 12px;
+    color: var(--red);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 2px;
+    animation: fadeUp 0.5s ease 0.18s both;
+  }
+  .header .hint {
+    font-size: 11px;
+    color: var(--light-gray);
+    font-style: italic;
+    margin-top: 6px;
+    animation: fadeUp 0.5s ease 0.26s both;
+  }
+
+  /* ---- LEGEND ---- */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 16px 26px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.5s ease 0.32s both;
+  }
+  .legend-chip {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 11px;
+    border-radius: 18px;
+    font-size: 11px; font-weight: 600;
+  }
+  .legend-chip.p { background: rgba(39,174,96,0.1); color: var(--protein); border: 1px solid rgba(39,174,96,0.25); }
+  .legend-chip.f { background: rgba(230,126,34,0.1); color: var(--fat); border: 1px solid rgba(230,126,34,0.25); }
+  .legend-chip.c { background: rgba(41,128,185,0.1); color: var(--carb); border: 1px solid rgba(41,128,185,0.25); }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* ---- CONTENT ---- */
+  .content { max-width: 540px; margin: 0 auto; padding: 0 16px 36px; }
+
+  /* ---- SECTION TITLES ---- */
+  .sec-title {
+    display: flex; align-items: center; gap: 9px;
+    margin-bottom: 14px; margin-top: 6px;
+  }
+  .sec-title .icon { font-size: 20px; }
+  .sec-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 900;
+    color: var(--dark-brown);
+    letter-spacing: -0.3px;
+  }
+  .sec-title .line {
+    flex: 1; height: 2px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    border-radius: 2px; margin-left: 8px;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 9px;
+    cursor: pointer;
+    border: 1.5px solid rgba(44,24,16,0.07);
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card:hover, .card.open {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    transform: scale(1.008);
+  }
+  .card.open.border-p { border-color: var(--protein); box-shadow: 0 6px 28px rgba(39,174,96,0.1); }
+  .card.open.border-f { border-color: var(--fat); box-shadow: 0 6px 28px rgba(230,126,34,0.1); }
+  .card.open.border-c { border-color: var(--carb); box-shadow: 0 6px 28px rgba(41,128,185,0.1); }
+
+  .card-top { display: flex; align-items: flex-start; gap: 12px; }
+  .card-emoji {
+    font-size: 30px; line-height: 1;
+    min-width: 36px; text-align: center;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+  }
+  .card-body { flex: 1; min-width: 0; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 16px;
+    color: white;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .bg-p { background: var(--protein); }
+  .bg-f { background: var(--fat); }
+  .bg-c { background: var(--carb); }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 800;
+    color: var(--dark-brown);
+    margin: 3px 0 3px;
+    line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 13px; color: var(--gray);
+    line-height: 1.5;
+  }
+  .card-arrow {
+    font-size: 13px; color: var(--light-gray);
+    transition: transform 0.3s ease;
+    margin-top: 6px; flex-shrink: 0;
+  }
+  .card.open .card-arrow { transform: rotate(180deg); }
+
+  .card-detail {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    opacity: 0;
+  }
+  .card.open .card-detail { max-height: 140px; opacity: 1; }
+
+  .detail-inner {
+    margin-top: 11px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    border-left: 3px solid;
+    font-size: 12px;
+    color: var(--dark-brown);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .detail-inner.p { background: rgba(39,174,96,0.06); border-color: var(--protein); }
+  .detail-inner.f { background: rgba(230,126,34,0.06); border-color: var(--fat); }
+  .detail-inner.c { background: rgba(41,128,185,0.06); border-color: var(--carb); }
+
+  .items-group { margin-bottom: 30px; }
+
+  /* ---- MACROS SECTION ---- */
+  .macros {
+    background: linear-gradient(135deg, #2C1810, #3D2518);
+    border-radius: 18px;
+    padding: 26px 20px;
+    margin-bottom: 30px;
+  }
+  .macros h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 800;
+    color: var(--cream); text-align: center;
+    margin-bottom: 4px;
+  }
+  .macros .subtitle {
+    font-size: 11px; color: #C0A08A;
+    text-align: center; margin-bottom: 18px;
+  }
+
+  .macro-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255,248,240,0.06);
+    margin-bottom: 9px;
+  }
+  .macro-card.p { border: 1px solid rgba(39,174,96,0.3); }
+  .macro-card.f { border: 1px solid rgba(230,126,34,0.3); }
+  .macro-card.c { border: 1px solid rgba(41,128,185,0.3); }
+
+  .macro-icon { font-size: 26px; min-width: 32px; text-align: center; }
+  .macro-info { flex: 1; }
+  .macro-name { font-weight: 700; font-size: 13px; }
+  .macro-name.p { color: var(--protein); }
+  .macro-name.f { color: var(--fat); }
+  .macro-name.c { color: var(--carb); }
+  .macro-meta { font-size: 10.5px; color: #C0A08A; }
+  .macro-func { font-size: 11px; color: #D4B8A0; margin-top: 1px; }
+  .macro-pct {
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: white;
+    font-size: 10px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .dist-label {
+    color: #C0A08A; font-size: 9px;
+    text-align: center; text-transform: uppercase;
+    letter-spacing: 1px; margin: 16px 0 6px;
+  }
+  .dist-bar {
+    display: flex; border-radius: 7px;
+    overflow: hidden; height: 22px;
+    font-size: 10.5px; font-weight: 700; color: white;
+  }
+  .dist-bar > div { display: flex; align-items: center; justify-content: center; }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    text-align: center;
+    padding: 18px 0 36px;
+    border-top: 1px solid rgba(192,57,43,0.12);
+  }
+  .footer .name { color: var(--red); font-size: 11px; font-weight: 600; letter-spacing: 2px; }
+  .footer .bio { color: var(--light-gray); font-size: 10px; font-style: italic; margin-top: 3px; }
+  .footer .small { color: #B0A098; font-size: 9px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img class="logo-img" src="logo.jpeg" alt="YIN YAN Logo">
+  <h1>YIN YAN</h1>
+  <div class="sub">Equilibrio Nutricional</div>
+  <div class="hint">Tocá cada plato para ver su información nutricional</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-chip p"><div class="legend-dot" style="background:var(--protein)"></div> Proteínas</div>
+  <div class="legend-chip f"><div class="legend-dot" style="background:var(--fat)"></div> Grasas Saludables</div>
+  <div class="legend-chip c"><div class="legend-dot" style="background:var(--carb)"></div> Carbohidratos</div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ENTRADAS -->
+  <div class="sec-title"><span class="icon">🥗</span><h2>Entradas</h2><div class="line"></div></div>
+  <div class="items-group">
+
+    <div class="card anim d1 border-f" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥑</div>
+        <div class="card-body">
+          <span class="badge bg-f">Grasas Saludables</span>
+          <div class="card-name">Palta Rellena</div>
+          <div class="card-desc">Palta reina con pollo o rellena de atún con mayonesa.</div>
+          <div class="card-detail"><div class="detail-inner f">🔬 Rica en ácidos grasos monoinsaturados (omega-9) que favorecen la salud cardiovascular y ayudan a absorber vitaminas liposolubles (A, D, E, K).</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d2 border-f" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥚</div>
+        <div class="card-body">
+          <span class="badge bg-f">Grasas Saludables</span>
+          <div class="card-name">Pescado Huevón</div>
+          <div class="card-desc">Huevo relleno con atún, mayonesa casera y alcaparra.</div>
+          <div class="card-detail"><div class="detail-inner f">🔬 Combina proteínas de alto valor biológico del huevo con omega-3 del atún, esenciales para la función cerebral y la visión.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d3 border-c" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥗</div>
+        <div class="card-body">
+          <span class="badge bg-c">Carbohidratos</span>
+          <div class="card-name">Ensalada de Poroto</div>
+          <div class="card-desc">Poroto cocido con tomate, pepino, aceite de oliva, jugo de limón y perejil.</div>
+          <div class="card-detail"><div class="detail-inner c">🔬 Las legumbres son ricas en almidón (carbohidrato complejo), fibra dietaria y vitaminas del grupo B. Aportan energía sostenida.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d4 border-p" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥒</div>
+        <div class="card-body">
+          <span class="badge bg-p">Proteínas</span>
+          <div class="card-name">Superensalada</div>
+          <div class="card-desc">Láminas de pepino y zanahorias con semillas de calabaza o maní, tostadas y vinagreta.</div>
+          <div class="card-detail"><div class="detail-inner p">🔬 Las semillas aportan proteínas vegetales, zinc, magnesio y ácidos grasos esenciales. Ideal como entrada ligera y nutritiva.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINCIPALES -->
+  <div class="sec-title"><span class="icon">🍽️</span><h2>Platos Principales</h2><div class="line"></div></div>
+  <div class="items-group">
+
+    <div class="card anim d1 border-p" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🐟</div>
+        <div class="card-body">
+          <span class="badge bg-p">Proteínas</span>
+          <div class="card-name">Aquaman</div>
+          <div class="card-desc">Pescados y mariscos + huevo, lentejas, garbanzos y acompañamientos.</div>
+          <div class="card-detail"><div class="detail-inner p">🔬 Alto contenido en proteínas completas, hierro hemo, omega-3 (DHA y EPA) y vitamina B12. Ideal para la regeneración muscular.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d2 border-c" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🍝</div>
+        <div class="card-body">
+          <span class="badge bg-c">Carbohidratos</span>
+          <div class="card-name">Super Pasta Bros</div>
+          <div class="card-desc">Pasta integral con verduras salteadas y queso fresco. Rico pero simple.</div>
+          <div class="card-detail"><div class="detail-inner c">🔬 Los carbohidratos complejos de la pasta integral liberan energía de forma sostenida. La fibra mejora la digestión y la saciedad.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d3 border-p" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🍗</div>
+        <div class="card-body">
+          <span class="badge bg-p">Proteínas</span>
+          <div class="card-name">Pechuga a la Plancha</div>
+          <div class="card-desc">Pechuga de pollo con arroz (integral/común), ensalada, palta y aceite de oliva.</div>
+          <div class="card-detail"><div class="detail-inner p">🔬 Plato equilibrado: proteínas magras + carbohidratos + grasas insaturadas. Combinación ideal de los tres macronutrientes.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d4 border-f" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥩</div>
+        <div class="card-body">
+          <span class="badge bg-f">Grasas Saludables</span>
+          <div class="card-name">El Coliseo</div>
+          <div class="card-desc">Carne de res con yogur griego, nueces, almendras y aceite de oliva.</div>
+          <div class="card-detail"><div class="detail-inner f">🔬 Las nueces aportan omega-3 (ALA) y el yogur griego probióticos beneficiosos para la microbiota intestinal.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSTRES -->
+  <div class="sec-title"><span class="icon">🍫</span><h2>Postres</h2><div class="line"></div></div>
+  <div class="items-group">
+
+    <div class="card anim d1 border-f" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🍫</div>
+        <div class="card-body">
+          <span class="badge bg-f">Grasas Saludables</span>
+          <div class="card-name">Bombón Asesino</div>
+          <div class="card-desc">Bombones de mantequilla de maní y chocolate. Dátiles rellenos bañados en chocolate negro.</div>
+          <div class="card-detail"><div class="detail-inner f">🔬 Las grasas del maní son monoinsaturadas y el chocolate negro (&gt;70% cacao) aporta flavonoides con poder antioxidante.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d2 border-p" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🍨</div>
+        <div class="card-body">
+          <span class="badge bg-p">Proteínas</span>
+          <div class="card-name">Frozen</div>
+          <div class="card-desc">Helados en base a frutas, yogur griego o leche proteica.</div>
+          <div class="card-detail"><div class="detail-inner p">🔬 Postre con alto valor proteico (caseína y suero), calcio y probióticos. Bajo en azúcares añadidos comparado con helados convencionales.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEBIDAS -->
+  <div class="sec-title"><span class="icon">🥤</span><h2>Bebidas</h2><div class="line"></div></div>
+  <div class="items-group">
+
+    <div class="card anim d1 border-f" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">☕</div>
+        <div class="card-body">
+          <span class="badge bg-f">Grasas</span>
+          <div class="card-name">Café con Crema / Batidos</div>
+          <div class="card-desc">Preparados con helado artesanal.</div>
+          <div class="card-detail"><div class="detail-inner f">🔬 Aportan lípidos para la absorción de vitaminas liposolubles y energía rápida.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d2 border-p" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🥛</div>
+        <div class="card-body">
+          <span class="badge bg-p">Proteínas</span>
+          <div class="card-name">Leche de Soja / Caldos de Huevos</div>
+          <div class="card-desc">"Huevo de soja". Bebidas proteicas.</div>
+          <div class="card-detail"><div class="detail-inner p">🔬 Ricas en proteínas vegetales y aminoácidos esenciales. Alternativa a la proteína animal.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+
+    <div class="card anim d3 border-c" onclick="this.classList.toggle('open')">
+      <div class="card-top">
+        <div class="card-emoji">🍺</div>
+        <div class="card-body">
+          <span class="badge bg-c">Carbohidratos</span>
+          <div class="card-name">Coca / Cerveza</div>
+          <div class="card-desc">Bebidas con carbohidratos simples.</div>
+          <div class="card-detail"><div class="detail-inner c">🔬 Aportan energía rápida por su alto contenido de azúcares. Consumir con moderación.</div></div>
+        </div>
+        <div class="card-arrow">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACRONUTRIENTES -->
+  <div class="macros">
+    <h2>Macronutrientes Esenciales</h2>
+    <div class="subtitle">Los tres pilares de una alimentación equilibrada</div>
+
+    <div class="macro-card p">
+      <div class="macro-icon">💪</div>
+      <div class="macro-info">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="macro-name p">Proteínas</span>
+          <span class="macro-meta">4 kcal/g</span>
+        </div>
+        <div class="macro-func">Construcción y reparación de tejidos, enzimas y anticuerpos</div>
+      </div>
+      <div class="macro-pct" style="background:var(--protein)">30%</div>
+    </div>
+
+    <div class="macro-card f">
+      <div class="macro-icon">🫒</div>
+      <div class="macro-info">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="macro-name f">Grasas</span>
+          <span class="macro-meta">9 kcal/g</span>
+        </div>
+        <div class="macro-func">Reserva energética, protección de órganos, absorción de vitaminas</div>
+      </div>
+      <div class="macro-pct" style="background:var(--fat)">30%</div>
+    </div>
+
+    <div class="macro-card c">
+      <div class="macro-icon">⚡</div>
+      <div class="macro-info">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="macro-name c">Carbohidratos</span>
+          <span class="macro-meta">4 kcal/g</span>
+        </div>
+        <div class="macro-func">Fuente principal de energía para cerebro y músculos</div>
+      </div>
+      <div class="macro-pct" style="background:var(--carb)">40%</div>
+    </div>
+
+    <div class="dist-label">Distribución ideal por comida</div>
+    <div class="dist-bar">
+      <div style="flex:3; background:var(--protein);">30%</div>
+      <div style="flex:3; background:var(--fat);">30%</div>
+      <div style="flex:4; background:var(--carb);">40%</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="name">YIN YAN</div>
+    <div class="bio">Trabajo Práctico de Biología · Enfoque Nutricional</div>
+    <div class="small">Los macronutrientes son esenciales para una dieta equilibrada</div>
+  </div>
+
+</div>
+</body>
+</html>
